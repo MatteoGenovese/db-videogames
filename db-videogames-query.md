@@ -185,14 +185,60 @@ join awards
 
 6. Selezionare categorie e classificazioni PEGI dei videogiochi che hanno ricevuto recensioni da 4 e 5 stelle, mostrandole una sola volta (3363)
 
-
+--------------------------------------------------------------------------
+select *
+from pegi_labels pl 
+join pegi_label_videogame plv ON plv.pegi_label_id =pl.id 
+JOIN videogames v on plv.videogame_id = v.id 
+JOIN reviews r on r.videogame_id =v.id 
+JOIN category_videogame cv on cv.videogame_id =v.id 
+JOIN categories c on c.id =cv.category_id 
+WHERE r.rating >=4 && r.rating <=5
 
 7. Selezionare quali giochi erano presenti nei tornei nei quali hanno partecipato i giocatori il cui nome inizia per 'S' (474)
+
+select DISTINCT v.id  
+FROM videogames v 
+join tournament_videogame tv on tv.videogame_id =v.id 
+JOIN tournaments t on t.id =tv.tournament_id 
+JOIN player_tournament pt on pt.tournament_id =t.id 
+JOIN players p on p.id = pt.player_id 
+WHERE p.name LIKE 's%'
+
 8. Selezionare le cittÃ  in cui Ã¨ stato giocato il gioco dell'anno del 2018 (36)
+
+select p.city 
+FROM players p
+join reviews r on r.player_id =p.id 
+join videogames v on v.id =r.videogame_id 
+join award_videogame av on av.videogame_id =v.id 
+JOIN awards a on a.id =av.award_id 
+WHERE a.name = "gioco dell'anno" && av.year = '2018'
+
+
 9. Selezionare i giocatori che hanno giocato al gioco piÃ¹ atteso del 2018 in un torneo del 2019 (3306)
+
+select p.name 
+FROM players p 
+join player_tournament pt on pt.player_id =p.id 
+join tournaments t on t.id =pt.tournament_id 
+join tournament_videogame tv on tv.tournament_id =t.id 
+JOIN videogames v on v.id =tv.videogame_id 
+join award_videogame av on av.videogame_id = v.id 
+JOIN awards a on a.id =av.award_id 
+WHERE a.name ="gioco più atteso" && av.year =2018 && t.`year` =2019
+
+
 
 ##### **BONUS**
 10. Selezionare i dati della prima software house che ha rilasciato un gioco, assieme ai dati del gioco stesso (software house id : 5)
+
+select *
+from software_houses sh 
+join videogames v on v.software_house_id = sh.id  
+ORDER BY v.release_date
+LIMIT 1
+
 11. Selezionare i dati del videogame (id, name, release_date, totale recensioni) con piÃ¹ recensioni (videogame id : potrebbe uscire 449 o 398, sono entrambi a 20)
 12. Selezionare la software house che ha vinto piÃ¹ premi tra il 2015 e il 2016 (software house id : potrebbe uscire 3 o 1, sono entrambi a 3)
 13. Selezionare le categorie dei videogame i quali hanno una media recensioni inferiore a 1.5 (10)
