@@ -239,6 +239,7 @@ join videogames v on v.software_house_id = sh.id
 ORDER BY v.release_date
 LIMIT 1
 
+
 11. Selezionare i dati del videogame (id, name, release_date, totale recensioni) con piÃ¹ recensioni (videogame id : potrebbe uscire 449 o 398, sono entrambi a 20)
 12. Selezionare la software house che ha vinto piÃ¹ premi tra il 2015 e il 2016 (software house id : potrebbe uscire 3 o 1, sono entrambi a 3)
 13. Selezionare le categorie dei videogame i quali hanno una media recensioni inferiore a 1.5 (10)
